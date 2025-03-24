@@ -2,20 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 #define MAX 100
 
-char stack[MAX][MAX];
+char stack[MAX][MAX]; // Stack untuk menyimpan ekspresi parsial
 char infix[MAX], postfix[MAX], prefix[MAX];
-int top = -1;
+int top = -1; // Inisialisasi stack kosong
 
 int space(char c) {
     return (c == ' ' || c == '\t');
 }
+
+//mengatur urutan operasi
+int precedence(char a) {
+    return (a == '+' || a == '-') ? 1 : (a == '*' || a == '/') ? 2 : (a == '^') ? 3 : 0;
+    }
+
 void push(char *c) {
     if (top == MAX - 1) {
         printf("Stack overflow\n");
-        return;
+    return;
     }
     strcpy(stack[++top], c);
 }
@@ -27,15 +32,9 @@ char *pop() {
     }
     return stack[top--];
 }
-
 int isEmpty() {
     return (top == -1);
 }
-
-//mengatur urutan operasi
-int precedence(char a) {
-    return (a == '+' || a == '-') ? 1 : (a == '*' || a == '/') ? 2 : (a == '^') ? 3 : 0;
-    }
 
 // Fungsi untuk membalik string
 void reverseString(char *str) {
@@ -57,7 +56,6 @@ void intopost() {
 
     for (i = 0; i < strlen(infix); i++) {
         simbol = infix[i];
-
         if (!space(simbol)) {
             switch (simbol) {
                 case '(':
@@ -78,57 +76,59 @@ void intopost() {
             }
         }
     }
-
     while (!isEmpty())
         postfix[j++] = *pop();
 
     postfix[j] = '\0';
-    printf("Hasil postfix : \n%s\n", postfix);
+    printf("Hasil postfix : %s\n", postfix);
 }
 
-//fungsi postfix ke infix
-void posttoin(){
+//fungsi postfix to infix
+void posttoin() {
     char simbol, op1[MAX], op2[MAX], expr[MAX];
-    top = -1;
+    top = -1; 
 
-    for (int i = 0; i < strlen(postfix); i++){
+    for (int i = 0; i < strlen(postfix); i++) {
         simbol = postfix[i];
-        if (isalnum(simbol)){
+
+        if (isalnum(simbol)) { 
             char temp[2] = {simbol, '\0'};
             push(temp);
-        }
-        else{
-          if (!isEmpty()) strcpy(op2, pop());
-          if (!isEmpty()) strcpy(op1, pop());
+        } else {  
+            if (!isEmpty()) strcpy(op2, pop()); 
+            if (!isEmpty()) strcpy(op1, pop()); 
 
-          snprintf(expr, MAX, "(%s%c%s)", op1, simbol, op2);
-          push(expr);
-        }
-    }
-    printf("Hasil Infix :\n%s\n", pop());
-}
-
-//fungsi prefix ke infix
-void pretoin(){
-    char simbol, op1[MAX], op2[MAX], expr[MAX];
-    top = -1;
-    for (int i = strlen(prefix) -1; i >= 0; i--){
-        simbol = prefix[i];
-        if (isalnum(simbol)){
-            char temp[2] = {simbol, '\0'};
-            push(temp);
-        }
-        else{
-            if (!isEmpty()) strcpy(op1, pop());
-            if (!isEmpty()) strcpy(op2, pop());
             snprintf(expr, MAX, "(%s%c%s)", op1, simbol, op2);
             push(expr);
         }
     }
-    printf("Hasil Infix :\n%s\n", pop());
+    printf("Hasil Infix : %s\n", pop());
 }
 
-// fungsi infix ke prefix
+//fungsi prefix to infix
+void pretoin() {
+    char simbol, op1[MAX], op2[MAX], expr[MAX];
+    top = -1; 
+
+    for (int i = strlen(prefix) - 1; i >= 0; i--) {
+        simbol = prefix[i];
+
+        if (isalnum(simbol)) {  
+            char temp[2] = {simbol, '\0'};
+            push(temp);
+        } else {  
+            if (!isEmpty()) strcpy(op1, pop());
+            if (!isEmpty()) strcpy(op2, pop());  
+
+            snprintf(expr, MAX, "(%s%c%s)", op1, simbol, op2);
+            push(expr);
+        }
+    }
+
+    printf("Hasil Infix: %s\n",pop());
+}
+
+// Fungsi konversi Infix ke Prefix
 void InToPre(char *infix, char *prefix) {
     char stack[MAX];
     int top = -1, j = 0;
@@ -147,7 +147,7 @@ void InToPre(char *infix, char *prefix) {
     reverseString(prefix);
 }
 
-// fungsi prefix ke postfix
+// Fungsi konversi Prefix ke Postfix
 void PreToPost(char *prefix, char *postfix) {
     char stack[MAX][MAX];
     int top = -1, len = strlen(prefix);
@@ -155,8 +155,8 @@ void PreToPost(char *prefix, char *postfix) {
     for (int i = len - 1; i >= 0; i--) {
         if (isalnum(prefix[i])) {
             char op[2] = {prefix[i], '\0'};
-            strcpy(stack[++top], op);
-        } else {
+            strcpy(stack[++top], op);}
+        else {
             char op1[MAX], op2[MAX], res[MAX];
             strcpy(op1, stack[top--]);
             strcpy(op2, stack[top--]);
@@ -167,16 +167,16 @@ void PreToPost(char *prefix, char *postfix) {
     strcpy(postfix, stack[top]);
 }
 
-// postfix ke prefix
+// Fungsi konversi Postfix ke Prefix
 void PostToPre(char *postfix, char *prefix) {
     char stack[MAX][MAX];
     int top = -1, len = strlen(postfix);
 
     for (int i = 0; i < len; i++) {
-        if (isalnum(postfix[i])) {
+        if(isalnum(postfix[i])) {
             char op[2] = {postfix[i], '\0'};
-            strcpy(stack[++top], op);
-        } else {
+            strcpy(stack[++top], op);}
+        else {
             char op1[MAX], op2[MAX], res[MAX];
             strcpy(op2, stack[top--]);
             strcpy(op1, stack[top--]);
@@ -206,7 +206,7 @@ int main(){
           printf("5. Prefix ke Postfix\n");
           printf("6. Postfix ke Prefix\n");
           printf("7. Keluar\n");
-          printf("Pilih Konversi (1/2/3/4/5/6/7) : ");
+          printf("Pilih Konversi (1/2/3/4/5/6/7): ");
           scanf("%d", &pilihan);
           getchar(); //menghilangkan newline dari buffer
 switch (pilihan) {
@@ -216,7 +216,6 @@ switch (pilihan) {
                 fgets(infix, MAX, stdin);
                 infix[strcspn(infix, "\n")] = '\0'; // Hapus newline
                 intopost();
-                printf("Ekspresi postfix: %s\n", postfix);
                 pressEnterToContinue();
                 break;
             case 2:
@@ -225,7 +224,6 @@ switch (pilihan) {
                 fgets(postfix, MAX, stdin);
                 postfix[strcspn(postfix, "\n")] = '\0'; 
                 posttoin();
-                printf("Ekspresi infix: %s\n", infix);
                 pressEnterToContinue();
                 break;
             case 3:
@@ -234,7 +232,6 @@ switch (pilihan) {
                 fgets(prefix, MAX, stdin);
                 prefix[strcspn(prefix, "\n")] = '\0'; 
                 pretoin();
-                printf("Ekspresi infix: %s\n", infix);
                 pressEnterToContinue();
                 break;
             case 4:
