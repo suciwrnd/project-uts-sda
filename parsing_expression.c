@@ -86,7 +86,6 @@ void intopost() {
     printf("Hasil postfix : \n%s\n", postfix);
 }
 
-
 //fungsi postfix ke infix
 void posttoin(){
     char simbol, op1[MAX], op2[MAX], expr[MAX];
@@ -108,7 +107,6 @@ void posttoin(){
     }
     printf("Hasil Infix :\n%s\n", pop());
 }
-
 
 //fungsi prefix ke infix
 void pretoin(){
@@ -275,5 +273,3 @@ switch (pilihan) {
     }
     return 0;
 }
-
-
