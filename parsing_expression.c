@@ -125,7 +125,7 @@ void pretoin() {
         }
     }
 
-    printf("Hasil Infix: %s\n",pop());
+    printf("Hasil Infix : %s\n",pop());
 }
 
 // Fungsi konversi Infix ke Prefix
@@ -145,6 +145,7 @@ void InToPre(char *infix, char *prefix) {
     while (top != -1) prefix[j++] = stack[top--];
     prefix[j] = '\0';
     reverseString(prefix);
+    printf("Hasil prefix :\n%s\n", prefix);
 }
 
 // Fungsi konversi Prefix ke Postfix
@@ -165,6 +166,7 @@ void PreToPost(char *prefix, char *postfix) {
         }
     }
     strcpy(postfix, stack[top]);
+    printf("Hasil postfix :\n%s\n", postfix);
 }
 
 // Fungsi konversi Postfix ke Prefix
@@ -185,6 +187,7 @@ void PostToPre(char *postfix, char *prefix) {
         }
     }
     strcpy(prefix, stack[top]);
+    printf("Hasil prefix : \n%s\n", prefix);
 }
 
 // Fungsi untuk menunggu user menekan enter sebelum kembali ke menu
@@ -240,7 +243,6 @@ switch (pilihan) {
                 fgets(infix, MAX, stdin);
                 infix[strcspn(infix, "\n")] = '\0'; // Hapus newline
                 InToPre(infix, prefix);
-                printf("Ekspresi Prefix: %s\n", prefix);
                 pressEnterToContinue();
                 break;
             case 5:
@@ -249,7 +251,6 @@ switch (pilihan) {
                 fgets(prefix, MAX, stdin);
                 prefix[strcspn(prefix, "\n")] = '\0'; 
                 PreToPost(prefix, postfix);
-                printf("Ekspresi Postfix: %s\n", postfix);
                 pressEnterToContinue();
                 break;
             case 6:
@@ -258,7 +259,6 @@ switch (pilihan) {
                 fgets(postfix, MAX, stdin);
                 postfix[strcspn(postfix, "\n")] = '\0'; 
                 PostToPre(postfix, prefix);
-                printf("Ekspresi Prefix: %s\n", prefix);
                 pressEnterToContinue();
                 break;
             case 7:
