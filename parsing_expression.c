@@ -8,15 +8,18 @@ char stack[MAX][MAX]; // Stack untuk menyimpan ekspresi parsial
 char infix[MAX], postfix[MAX], prefix[MAX];
 int top = -1; // Inisialisasi stack kosong
 
+
 //mengecek spasi atau tab
 int space(char simbol) {
     return (simbol == ' ' || simbol == '\t');
 }
 
+
 //mengatur urutan operasi
 int precedence(char simbol) {
     return (simbol == '+' || simbol == '-') ? 1 : (simbol == '*' || simbol == '/') ? 2 : (simbol == '^') ? 3 : 0;
     }
+
 
 //menambah elemen
 void push(char *c) {
@@ -27,6 +30,7 @@ void push(char *c) {
     strcpy(stack[++top], c);
 }
 
+
 //menghapus elemen
 char *pop() {
     if (top == -1) {
@@ -36,10 +40,12 @@ char *pop() {
     return stack[top--];
 }
 
+
 //mengecek stack kosong atau tidak
 int isEmpty() {
     return (top == -1);
 }
+
 
 // Fungsi untuk membalik string
 void reverseString(char *str) {
@@ -53,7 +59,15 @@ void reverseString(char *str) {
     }
 }
 
-//fungsi infix to postfix
+
+// Fungsi untuk menunggu user menekan enter sebelum kembali ke menu
+void pressEnterToContinue() {
+    printf("\nsilahkan tekan enter untuk kembali ke menu.");
+    getchar(); // Menunggu input enter
+}
+
+
+//fungsi konversi infix to postfix
 void intopost() {
     int i, j = 0;
     char simbol, next;
@@ -88,7 +102,8 @@ void intopost() {
     printf("Hasil postfix : %s\n", postfix);
 }
 
-//fungsi postfix to infix
+
+//fungsi konversi postfix to infix
 void posttoin() {
     char simbol, op1[MAX], op2[MAX], expr[MAX];
     top = -1; 
@@ -110,7 +125,8 @@ void posttoin() {
     printf("Hasil Infix : %s\n", pop());
 }
 
-//fungsi prefix to infix
+
+//fungsi konversi prefix to infix
 void pretoin() {
     char simbol, op1[MAX], op2[MAX], expr[MAX];
     top = -1; 
@@ -133,8 +149,9 @@ void pretoin() {
     printf("Hasil Infix : %s\n",pop());
 }
 
+
 // Fungsi konversi Infix ke Prefix
-void InToPre(char *infix, char *prefix) {
+void intopre(char *infix, char *prefix) {
     char stack[MAX];
     int top = -1, j = 0;
     reverseString(infix);
@@ -153,8 +170,9 @@ void InToPre(char *infix, char *prefix) {
     printf("Hasil prefix :\n%s\n", prefix);
 }
 
+
 // Fungsi konversi Prefix ke Postfix
-void PreToPost(char *prefix, char *postfix) {
+void pretopost(char *prefix, char *postfix) {
     char stack[MAX][MAX];
     int top = -1, len = strlen(prefix);
 
@@ -174,8 +192,9 @@ void PreToPost(char *prefix, char *postfix) {
     printf("Hasil postfix :\n%s\n", postfix);
 }
 
+
 // Fungsi konversi Postfix ke Prefix
-void PostToPre(char *postfix, char *prefix) {
+void posttopre(char *postfix, char *prefix) {
     char stack[MAX][MAX];
     int top = -1, len = strlen(postfix);
 
@@ -195,11 +214,6 @@ void PostToPre(char *postfix, char *prefix) {
     printf("Hasil prefix : \n%s\n", prefix);
 }
 
-// Fungsi untuk menunggu user menekan enter sebelum kembali ke menu
-void pressEnterToContinue() {
-    printf("\nsilahkan tekan enter untuk kembali ke menu.");
-    getchar(); // Menunggu input enter
-}
 
 int main(){
       int pilihan;
@@ -247,7 +261,7 @@ switch (pilihan) {
                 printf("Masukkan ekspresi infix: ");
                 fgets(infix, MAX, stdin);
                 infix[strcspn(infix, "\n")] = '\0'; // Hapus newline
-                InToPre(infix, prefix);
+                intopre(infix, prefix);
                 pressEnterToContinue();
                 break;
             case 5:
@@ -255,7 +269,7 @@ switch (pilihan) {
                 printf("Masukkan ekspresi prefix: ");
                 fgets(prefix, MAX, stdin);
                 prefix[strcspn(prefix, "\n")] = '\0'; 
-                PreToPost(prefix, postfix);
+                pretopost(prefix, postfix);
                 pressEnterToContinue();
                 break;
             case 6:
@@ -263,7 +277,7 @@ switch (pilihan) {
                 printf("Masukkan ekspresi postfix: ");
                 fgets(postfix, MAX, stdin);
                 postfix[strcspn(postfix, "\n")] = '\0'; 
-                PostToPre(postfix, prefix);
+                posttopre(postfix, prefix);
                 pressEnterToContinue();
                 break;
             case 7:
