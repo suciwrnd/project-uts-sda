@@ -8,15 +8,17 @@ char stack[MAX][MAX]; // Stack untuk menyimpan ekspresi parsial
 char infix[MAX], postfix[MAX], prefix[MAX];
 int top = -1; // Inisialisasi stack kosong
 
-int space(char c) {
-    return (c == ' ' || c == '\t');
+//mengecek spasi atau tab
+int space(char simbol) {
+    return (simbol == ' ' || simbol == '\t');
 }
 
 //mengatur urutan operasi
-int precedence(char a) {
-    return (a == '+' || a == '-') ? 1 : (a == '*' || a == '/') ? 2 : (a == '^') ? 3 : 0;
+int precedence(char simbol) {
+    return (simbol == '+' || simbol == '-') ? 1 : (simbol == '*' || simbol == '/') ? 2 : (simbol == '^') ? 3 : 0;
     }
 
+//menambah elemen
 void push(char *c) {
     if (top == MAX - 1) {
         printf("Stack overflow\n");
@@ -25,6 +27,7 @@ void push(char *c) {
     strcpy(stack[++top], c);
 }
 
+//menghapus elemen
 char *pop() {
     if (top == -1) {
         printf("Stack underflow\n");
@@ -32,6 +35,8 @@ char *pop() {
     }
     return stack[top--];
 }
+
+//mengecek stack kosong atau tidak
 int isEmpty() {
     return (top == -1);
 }
@@ -263,7 +268,7 @@ switch (pilihan) {
                 break;
             case 7:
                 printf("Keluar dari program.\n");
-                break;
+                return 0;
             default:
                 printf("Pilihan tidak valid! Silakan coba lagi.\n");
         }
